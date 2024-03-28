@@ -8,51 +8,127 @@
   body {
     font-family: Arial, sans-serif;
   }
+
   .center {
-    margin: auto;
-    width: 60%;
-    padding: 10px;
+    width: 80%; /* Adjust as needed */
+    max-width: 600px; /* Adjust maximum width as needed */
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 0; /* Zero padding */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
   }
-  
+
+
   .section-title {
     font-weight: bold;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 0px;
   }
 
   .question-container {
-    margin-bottom: 20px;
+    margin: auto;
   }
 
   .options-container {
     list-style-type: none;
-    padding: 0;
+    padding-bottom: 20px;
   }
 
   .option-item {
     margin-bottom: 10px;
   }
 
+  .score-label{
+    font-size: 20px;
+    display: block; /* Make the label a block-level element */
+    text-align: center; /* Center the text horizontally */
+  }
+
   #result {
     font-weight: bold;
+    font-size: 40px;
+    padding-bottom: 0px;
+    display: block; /* Make the label a block-level element */
+    text-align: center; /* Center the text horizontally */
+    min-height: 60px;
+    color:  #008CBA;
   }
+
+  #show-answers-btn {
+    margin-top: 0px;
+  }
+
+  .correct-answer {
+    color: rgb(43, 143, 43);
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+
+  .button {
+    background-color: #008CBA; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;   
+    width: 100%;
+    margin: 2px;
+  }
+
+  .select::-ms-expand {
+     display: none;
+   }
+
+  .select {
+        display: inline-block;
+        box-sizing: border-box;
+        padding: 0.5em 2em 0.5em 0.5em;
+        border: 1px solid #eee;
+        font: inherit;
+        line-height: inherit;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        appearance: none;
+        background-repeat: no-repeat;
+        background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+        background-position: right 15px top 1em, right 10px top 1em;
+        background-size: 5px 5px, 5px 5px;
+        width: 100%;
+    }
+    .img {
+        max-width: 100%; /* Ensures image never exceeds the width of its container */
+        height: auto; /* Allows the image's height to adjust automatically based on its width */
+        display: block; /* Ensures the image behaves as a block-level element */
+        margin: 0 auto; /* Centers the image horizontally within its container */
+    }
+
 </style>
 </head>
 <body>
 <div class="center">
-  <label for="section-select">Select Section:</label>
-  <select id="section-select">
-    <option value="">-- Select Section --</option>
+   <select id="section-select"  class="select">
+    <!--<option value="">-- Select Section --</option> -->
   </select>
+
+  <div id="quiz-container" ></div>
+
+  <!--<button id="show-answers-btn" style="display: none;" class="button1">Show Correct Answers</button>-->
+  <label id="scorelbl" class="score-label">Score</label>
+  <div id="result" ></div>
+  <button id="submit-btn" style="display: none;" class="button" >Submit</button>
+  
 </div>
-<div id="quiz-container" class="center"></div>
-<button id="submit-btn" style="display: none;">Submit</button>
-<div id="result"></div>
+
+
 <script>
 const quizContainer = document.getElementById('quiz-container');
 const submitButton = document.getElementById('submit-btn');
 const resultContainer = document.getElementById('result');
 const sectionSelect = document.getElementById('section-select');
+const showAnswersButton = document.getElementById('show-answers-btn');
 
 let currentQuestionIndex = 0;
 let score = 0;
@@ -65,6 +141,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "C",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -88,6 +165,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -111,6 +189,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -134,6 +213,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -157,6 +237,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -180,6 +261,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -203,6 +285,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -226,6 +309,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -249,6 +333,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -272,6 +357,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -300,6 +386,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "A",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -323,6 +410,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -346,6 +434,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -369,6 +458,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -392,6 +482,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -415,6 +506,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -438,6 +530,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -461,6 +554,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -484,6 +578,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -507,6 +602,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -535,6 +631,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "A",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -558,6 +655,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -581,6 +679,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -604,6 +703,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -627,6 +727,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -650,6 +751,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -673,6 +775,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -696,6 +799,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -719,6 +823,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -742,6 +847,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -770,6 +876,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "C",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -793,6 +900,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -816,6 +924,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -839,6 +948,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -862,6 +972,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -885,6 +996,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -908,6 +1020,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -931,6 +1044,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -954,6 +1068,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -977,6 +1092,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -1005,6 +1121,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "C",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -1032,6 +1149,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -1055,6 +1173,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -1078,6 +1197,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -1101,6 +1221,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -1124,6 +1245,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -1147,6 +1269,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -1170,6 +1293,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -1193,6 +1317,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -1216,6 +1341,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 9,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/2otazka.jpg?1702374778",
                     "options": [
                         {
@@ -1244,6 +1370,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "B",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -1267,6 +1394,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -1290,6 +1418,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -1313,6 +1442,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -1336,6 +1466,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -1359,6 +1490,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -1382,6 +1514,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -1405,6 +1538,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -1428,6 +1562,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -1451,6 +1586,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -1479,6 +1615,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "A",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -1502,6 +1639,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -1525,6 +1663,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -1548,6 +1687,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -1571,6 +1711,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -1594,6 +1735,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -1617,6 +1759,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -1640,6 +1783,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -1663,6 +1807,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -1686,6 +1831,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -1714,6 +1860,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "C",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -1737,6 +1884,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -1760,6 +1908,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -1783,6 +1932,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -1806,6 +1956,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -1829,6 +1980,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -1852,6 +2004,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -1875,6 +2028,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -1898,6 +2052,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -1921,6 +2076,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -1949,6 +2105,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "C",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -1972,6 +2129,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -1995,6 +2153,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -2018,6 +2177,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -2041,6 +2201,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -2064,6 +2225,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -2087,6 +2249,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -2110,6 +2273,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -2133,6 +2297,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -2156,6 +2321,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -2184,6 +2350,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "C",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -2207,6 +2374,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -2230,6 +2398,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -2253,6 +2422,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -2276,6 +2446,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -2299,6 +2470,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -2322,6 +2494,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -2345,6 +2518,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -2368,6 +2542,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -2391,6 +2566,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -2419,6 +2595,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "D",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -2442,6 +2619,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -2465,6 +2643,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -2488,6 +2667,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -2511,6 +2691,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -2534,6 +2715,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -2557,6 +2739,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -2580,6 +2763,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -2603,6 +2787,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -2626,6 +2811,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -2654,6 +2840,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "C",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -2677,6 +2864,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 1,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/3otazka.jpg?1702374778",
                     "options": [
                         {
@@ -2700,6 +2888,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -2723,6 +2912,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 3,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/4otazka.jpg?1702374778",
                     "options": [
                         {
@@ -2746,6 +2936,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -2769,6 +2960,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -2792,6 +2984,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -2815,6 +3008,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -2838,6 +3032,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -2861,6 +3056,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -2889,6 +3085,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "B",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -2912,6 +3109,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -2935,6 +3133,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -2958,6 +3157,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -2981,6 +3181,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -3004,6 +3205,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -3027,6 +3229,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -3050,6 +3253,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -3073,6 +3277,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -3096,6 +3301,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -3124,6 +3330,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "D",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -3147,6 +3354,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -3170,6 +3378,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -3193,6 +3402,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -3216,6 +3426,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -3239,6 +3450,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -3262,6 +3474,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -3285,6 +3498,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -3308,6 +3522,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -3331,6 +3546,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -3359,6 +3575,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "D",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -3382,6 +3599,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -3405,6 +3623,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -3428,6 +3647,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -3451,6 +3671,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -3474,6 +3695,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -3497,6 +3719,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -3520,6 +3743,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -3543,6 +3767,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -3566,6 +3791,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -3594,6 +3820,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "B",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -3617,6 +3844,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -3640,6 +3868,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -3663,6 +3892,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -3686,6 +3916,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -3709,6 +3940,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -3732,6 +3964,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -3755,6 +3988,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -3778,6 +4012,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -3801,6 +4036,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -3829,6 +4065,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "D",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -3852,6 +4089,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -3875,6 +4113,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -3898,6 +4137,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 3,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/5otazka.jpg?1702374778",
                     "options": [
                         {
@@ -3921,6 +4161,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -3944,6 +4185,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -3967,6 +4209,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -3990,6 +4233,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -4013,6 +4257,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -4036,6 +4281,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -4064,6 +4310,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "A",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -4087,6 +4334,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -4110,6 +4358,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -4133,6 +4382,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 3,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/6otazka.jpg?1702374779",
                     "options": [
                         {
@@ -4156,6 +4406,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -4179,6 +4430,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 5,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/7otazka.jpg?1702374779",
                     "options": [
                         {
@@ -4202,6 +4454,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 6,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/8otazka.jpg?1702374779",
                     "options": [
                         {
@@ -4225,6 +4478,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -4248,6 +4502,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -4271,6 +4526,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -4299,6 +4555,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "A",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -4322,6 +4579,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -4345,6 +4603,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 2,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/9otazka.jpg?1702374779",
                     "options": [
                         {
@@ -4368,6 +4627,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -4391,6 +4651,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -4414,6 +4675,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 5,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/10otazka.jpg?1702374779",
                     "options": [
                         {
@@ -4437,6 +4699,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -4460,6 +4723,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -4483,6 +4747,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -4506,6 +4771,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -4534,6 +4800,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "C",
+                    "id": 0,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/11otazka.jpg?1702374779",
                     "options": [
                         {
@@ -4557,6 +4824,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -4580,6 +4848,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -4603,6 +4872,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 3,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/12otazka.jpg?1702374779",
                     "options": [
                         {
@@ -4626,6 +4896,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -4649,6 +4920,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -4672,6 +4944,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 6,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/13otazka.jpg?1702374779",
                     "options": [
                         {
@@ -4695,6 +4968,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -4718,6 +4992,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -4741,6 +5016,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -4769,6 +5045,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "B",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -4792,6 +5069,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -4815,6 +5093,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -4838,6 +5117,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -4861,6 +5141,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -4884,6 +5165,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -4907,6 +5189,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -4930,6 +5213,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 7,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/14otazka.jpg?1702374779",
                     "options": [
                         {
@@ -4953,6 +5237,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -4976,6 +5261,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -5004,6 +5290,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "B",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -5027,6 +5314,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -5050,6 +5338,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -5073,6 +5362,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -5096,6 +5386,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -5119,6 +5410,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -5142,6 +5434,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -5165,6 +5458,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -5188,6 +5482,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -5211,6 +5506,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -5239,6 +5535,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "A",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -5262,6 +5559,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -5285,6 +5583,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -5308,6 +5607,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -5331,6 +5631,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -5354,6 +5655,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -5377,6 +5679,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -5400,6 +5703,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -5423,6 +5727,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -5446,6 +5751,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -5474,6 +5780,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "A",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -5497,6 +5804,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -5520,6 +5828,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -5543,6 +5852,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -5566,6 +5876,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -5589,6 +5900,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -5612,6 +5924,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -5635,6 +5948,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -5658,6 +5972,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -5681,6 +5996,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -5709,6 +6025,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "A",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -5732,6 +6049,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -5755,6 +6073,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -5778,6 +6097,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -5801,6 +6121,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -5824,6 +6145,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -5847,6 +6169,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -5870,6 +6193,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -5893,6 +6217,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -5916,6 +6241,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -5944,6 +6270,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "C",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -5967,6 +6294,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -5990,6 +6318,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -6013,6 +6342,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -6036,6 +6366,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -6059,6 +6390,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -6082,6 +6414,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -6105,6 +6438,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -6128,6 +6462,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -6151,6 +6486,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -6179,6 +6515,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "B",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -6202,6 +6539,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -6225,6 +6563,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -6248,6 +6587,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -6271,6 +6611,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -6294,6 +6635,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -6317,6 +6659,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -6340,6 +6683,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -6363,6 +6707,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -6386,6 +6731,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -6414,6 +6760,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "A",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -6437,6 +6784,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -6460,6 +6808,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -6483,6 +6832,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -6506,6 +6856,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -6529,6 +6880,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -6552,6 +6904,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -6575,6 +6928,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -6598,6 +6952,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -6621,6 +6976,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -6649,6 +7005,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "B",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -6672,6 +7029,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -6695,6 +7053,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -6718,6 +7077,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -6741,6 +7101,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -6764,6 +7125,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 5,
                     "image": null,
                     "options": [
                         {
@@ -6787,6 +7149,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 6,
                     "image": null,
                     "options": [
                         {
@@ -6810,6 +7173,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 7,
                     "image": null,
                     "options": [
                         {
@@ -6833,6 +7197,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -6856,6 +7221,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 9,
                     "image": null,
                     "options": [
                         {
@@ -6884,6 +7250,7 @@ const jsonData = {
             "questions": [
                 {
                     "answer": "A",
+                    "id": 0,
                     "image": null,
                     "options": [
                         {
@@ -6911,6 +7278,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 1,
                     "image": null,
                     "options": [
                         {
@@ -6938,6 +7306,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 2,
                     "image": null,
                     "options": [
                         {
@@ -6965,6 +7334,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 3,
                     "image": null,
                     "options": [
                         {
@@ -6992,6 +7362,7 @@ const jsonData = {
                 },
                 {
                     "answer": "B",
+                    "id": 4,
                     "image": null,
                     "options": [
                         {
@@ -7019,6 +7390,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 5,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/20otazka.jpg?1702374780",
                     "options": [
                         {
@@ -7042,6 +7414,7 @@ const jsonData = {
                 },
                 {
                     "answer": "A",
+                    "id": 6,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/21otazka.jpg?1702374780",
                     "options": [
                         {
@@ -7065,6 +7438,7 @@ const jsonData = {
                 },
                 {
                     "answer": "D",
+                    "id": 7,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/22otazka.jpg?1702374780",
                     "options": [
                         {
@@ -7088,6 +7462,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 8,
                     "image": null,
                     "options": [
                         {
@@ -7115,6 +7490,7 @@ const jsonData = {
                 },
                 {
                     "answer": "C",
+                    "id": 9,
                     "image": "https://databanka-obcanstvi.cestina-pro-cizince.cz/strom-a-ulohy_soubory_aktual/24otazka.jpg?1702374780",
                     "options": [
                         {
@@ -7151,6 +7527,7 @@ function loadQuestions(sectionTitle) {
   }
 }
 
+
 // Function to render questions
 function renderQuestions(questions) {
   quizContainer.innerHTML = '';
@@ -7159,12 +7536,12 @@ function renderQuestions(questions) {
     questionElement.classList.add('question-container');
     questionElement.innerHTML = `
       <h3>${question.question}</h3>
-      <img src="${question.image}", alt/>
+      ${question.image ? `<img src="${question.image}" class="img" alt/>` : ''} 
       <ul class="options-container">
         ${question.options.map(option => `
           <li class="option-item">
-            <label><input type="radio" name="${question.question}" value="${option.id}">${option.text}</label>
-            ${option.image ? `<img src="${option.image}" alt="Option Image">` : ''}           
+            <label><input type="radio" name="${question.id}" value="${option.id}" >${option.text}</label>
+            ${option.image ? `<img src="${option.image}" class="img" alt="Option Image">` : ''}           
           </li>
         `).join('')}
       </ul>
@@ -7172,20 +7549,21 @@ function renderQuestions(questions) {
     quizContainer.appendChild(questionElement);
   });
   submitButton.style.display = 'block';
+  // showAnswersButton.style.display = 'block';
 }
 
 // Function to calculate score and show result
 function calculateScore() {
   score = 0;
   currentQuestions.forEach(question => {
-    const selectedOption = document.querySelector(`input[name="${question.question}"]:checked`);
+    const selectedOption = document.querySelector(`input[name="${question.id}"]:checked`);
     if (selectedOption) {
       if (selectedOption.value === question.answer) {
         score++;
       }
     }
   });
-  resultContainer.textContent = `Your score: ${score} out of ${currentQuestions.length}`;
+  resultContainer.textContent = `${score} out of ${currentQuestions.length}`;
 }
 
 // Populate section names in the dropdown menu
@@ -7194,6 +7572,7 @@ jsonData.sections.forEach(section => {
   option.value = section.title;
   option.textContent = section.title;
   sectionSelect.appendChild(option);
+ 
 });
 
 // Event listener for section select
@@ -7202,12 +7581,37 @@ sectionSelect.addEventListener('change', function() {
   if (selectedSection) {
     loadQuestions(selectedSection);
   }
+  resultContainer.textContent = ``;
 });
+
+function showCorrectAnswers() {
+   
+  currentQuestions.forEach(question => {
+    const selectedOptions = document.querySelectorAll(`input[name="${question.id}"]`);
+    if (selectedOptions) {
+      question.options.forEach(option => {
+
+        selectedOptions.forEach(radio => {
+ 
+        if (radio.value === question.answer) { 
+            const  label = radio.parentElement;  
+            label.classList.add('correct-answer');
+        }
+        });      
+      });
+     
+    }
+  });
+}
 
 // Event listener for submit button
 submitButton.addEventListener('click', function() {
   calculateScore();
+  showCorrectAnswers ();
 });
+/*showAnswersButton.addEventListener('click', function() { 
+  showCorrectAnswers ();
+});*/
 
 // Load questions for the default section
 loadQuestions(jsonData.sections[0].title);

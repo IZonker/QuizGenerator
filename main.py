@@ -19,11 +19,13 @@ for child in children:
             section_title = child.next_element.next_element.text  
     if child.name == 'ol':
         section = { 'title' : section_title, 'questions':[]}
+        questionid=0
         for li in child:
-            q = {'question':None, 'image':None, 'options':[], 'answer': None}
+            q = {'id':None,'question':None, 'image':None, 'options':[], 'answer': None}
 
             title = li.find('div', class_ = "text")
             if title:
+                q['id'] = questionid
                 q['question'] = title.text
 
             img = li.find('img', class_ = "imgQ")
@@ -66,19 +68,10 @@ for child in children:
                         q['answer'] = re.search(r'\b([A-Za-z])\b', span.text).group(1) 
 
             section['questions'].append(q)
+            questionid = questionid + 1
 
         db['sections'].append(section)
 
 print(db)
 
-# results = soup.find_all('ol', class_ = 'alternatives')
-# for result in results:
-#     children = result.findChildren( recursive=False)
-   
-#     for child in children:
-#         print(child)
-#         input = child.find('input')
-#         if input:
-#             print(input.next_element)
-#     print("\n\n")
     
