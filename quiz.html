@@ -17,7 +17,6 @@
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
   }
 
-
   .section-title {
     font-weight: bold;
     margin-top: 10px;
@@ -43,7 +42,7 @@
     text-align: center; /* Center the text horizontally */
   }
 
-  #result {
+  .result {
     font-weight: bold;
     font-size: 40px;
     padding-bottom: 0px;
@@ -53,19 +52,20 @@
     color:  #008CBA;
   }
 
-  #show-answers-btn {
+  .show-answers-btn {
     margin-top: 0px;
   }
 
   .correct-answer {
-    color: rgb(43, 143, 43);
+    color: #008CBA;
     font-weight: bold;
     text-decoration: underline;
+    text-underline-offset: 5px;
   }
 
 
   .button {
-    background-color: #008CBA; /* Green */
+    background-color: #008CBA; 
     border: none;
     color: white;
     padding: 15px 32px;
@@ -98,6 +98,7 @@
         background-size: 5px 5px, 5px 5px;
         width: 100%;
     }
+
     .img {
         max-width: 100%; /* Ensures image never exceeds the width of its container */
         height: auto; /* Allows the image's height to adjust automatically based on its width */
@@ -110,16 +111,11 @@
 <body>
 <div class="center">
    <select id="section-select"  class="select">
-    <!--<option value="">-- Select Section --</option> -->
-  </select>
-
+</select>
   <div id="quiz-container" ></div>
-
-  <!--<button id="show-answers-btn" style="display: none;" class="button1">Show Correct Answers</button>-->
-  <label id="scorelbl" class="score-label">Score</label>
-  <div id="result" ></div>
-  <button id="submit-btn" style="display: none;" class="button" >Submit</button>
-  
+  <label id="score-label" class="score-label">Score</label>
+  <div id= "result" class="result" ></div>
+  <button id="submit-btn" style="display: none;" class="button" >Submit</button>  
 </div>
 
 
@@ -7527,7 +7523,6 @@ function loadQuestions(sectionTitle) {
   }
 }
 
-
 // Function to render questions
 function renderQuestions(questions) {
   quizContainer.innerHTML = '';
@@ -7549,7 +7544,6 @@ function renderQuestions(questions) {
     quizContainer.appendChild(questionElement);
   });
   submitButton.style.display = 'block';
-  // showAnswersButton.style.display = 'block';
 }
 
 // Function to calculate score and show result
@@ -7609,9 +7603,6 @@ submitButton.addEventListener('click', function() {
   calculateScore();
   showCorrectAnswers ();
 });
-/*showAnswersButton.addEventListener('click', function() { 
-  showCorrectAnswers ();
-});*/
 
 // Load questions for the default section
 loadQuestions(jsonData.sections[0].title);

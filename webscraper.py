@@ -1,18 +1,18 @@
 from bs4 import BeautifulSoup
 import requests
 import re
+import json
 
 url = 'https://cestina-pro-cizince.cz/obcanstvi/databanka-uloh/'
 
 page = requests.get(url)
 
-soup = BeautifulSoup(page.text, 'html')
+soup = BeautifulSoup(page.text, features="html.parser")
 root = soup.find('div', class_ = "interaktivne") 
 children = root.findChildren(recursive=False)
 db = { 'sections' : []}
 section_title=None
-for child in children:
-    
+for child in children:    
     
     if child.name == 'h3':
         if child.next_element.next_element:
@@ -72,6 +72,5 @@ for child in children:
 
         db['sections'].append(section)
 
-print(db)
-
-    
+with open('Q&A.json', 'w', encoding='utf-8') as json_file:
+    json.dump(db, json_file,ensure_ascii=False)
